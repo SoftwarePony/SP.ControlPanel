@@ -1,0 +1,14 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/SP.ControlPanel/v16
+/.vs
+/Src/SP.ControlPanel/.vs/SP.ControlPanel/v16
+/Src/SP.ControlPanel/SP.ControlPanel.Api/obj
+/Src/SP.ControlPanel/SP.ControlPanel.Business/obj
+/Src/SP.ControlPanel/SP.ControlPanel.Business.Interfaces/obj
+/Src/SP.ControlPanel/SP.ControlPanel.Core/obj
+/Src/SP.ControlPanel/SP.ControlPanel.Core.Interfaces/obj
+/Src/SP.ControlPanel/SP.ControlPanel.Data/obj
+/Src/SP.ControlPanel/SP.ControlPanel.Data.Interfaces/obj
