@@ -13,3 +13,7 @@
 /Src/SP.ControlPanel/SP.ControlPanel.Data/obj
 /Src/SP.ControlPanel/SP.ControlPanel.Data.Interfaces/obj
 /Src/SP.ControlPanel/.vs/SP.ControlPanel/DesignTimeBuild/.dtbcache.v2
+/Src/SP.ControlPanel/SP.ControlPanel.Data/bin/Debug/netstandard2.1
+/Src/SP.ControlPanel/SP.ControlPanel.Data.Interfaces/bin/Debug/netstandard2.1
+/Src/SP.ControlPanel/SP.ControlPanel.Data.UnitTests/bin/Debug
+/Src/SP.ControlPanel/SP.ControlPanel.Data.UnitTests/obj
