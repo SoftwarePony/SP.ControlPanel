@@ -17,3 +17,8 @@
 /Src/SP.ControlPanel/SP.ControlPanel.Data.Interfaces/bin/Debug/netstandard2.1
 /Src/SP.ControlPanel/SP.ControlPanel.Data.UnitTests/bin/Debug
 /Src/SP.ControlPanel/SP.ControlPanel.Data.UnitTests/obj
+/Src/SP.ControlPanel/SP.ControlPanel.Api/bin/Debug/net5.0
+/Src/SP.ControlPanel/SP.ControlPanel.Business/bin/Debug/netstandard2.1
+/Src/SP.ControlPanel/SP.ControlPanel.Business.Interfaces/bin/Debug/netstandard2.1
+/Src/SP.ControlPanel/SP.ControlPanel.Core/bin/Debug/netstandard2.1
+/Src/SP.ControlPanel/SP.ControlPanel.Core.Interfaces/bin/Debug/netstandard2.1
