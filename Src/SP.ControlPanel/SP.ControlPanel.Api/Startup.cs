@@ -6,9 +6,16 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
+using SP.ControlPanel.Api.Authentication.Handlers;
+using SP.ControlPanel.Api.Authentication.Requirements;
 using SP.ControlPanel.Data.Model;
 
 namespace SP.ControlPanel.Api
@@ -25,9 +32,48 @@ namespace SP.ControlPanel.Api
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            string domain = $"https://{ _configuration["Authentication:Domain"] }";
+
             services.AddDbContext<ControlPanelEntities>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnectionString"))
             );
+
+            services.AddScoped<IAuthorizationHandler, HasGlobalRoleHandler>();
+
+            //services.AddCors(options =>
+            //{
+            //    options.AddDefaultPolicy(
+            //        builder =>
+            //        {
+            //            builder.WithOrigins("https://cp.pro-code.tech")
+            //                .AllowAnyMethod()
+            //                .WithHeaders(HeaderNames.Authorization, HeaderNames.ContentType);
+            //        });
+            //});
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = domain;
+                options.Audience = _configuration["Authentication:ApiIdentifier"];
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = ClaimTypes.NameIdentifier
+                };
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsGlobalAdministrator", policy =>
+                {
+                    policy.Requirements.Add(new HasGlobalRoleRequirement("global-admin", domain));
+                });
+            });
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,14 +84,18 @@ namespace SP.ControlPanel.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
+
             app.UseRouting();
+
+            //app.UseCors();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
