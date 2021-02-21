@@ -7,6 +7,7 @@ namespace SP.ControlPanel.Data.Interfaces
         IAccountTypesRepository AccountTypesRepository { get; }
         IPersonTypesRepository PersonTypesRepository { get; }
         IAccountsRepository AccountsRepository { get; }
+        IPersonsRepository PersonsRepository { get; }
 
         void Save();
     }
