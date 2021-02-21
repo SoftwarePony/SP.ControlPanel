@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Moq;
@@ -26,7 +29,28 @@ namespace SP.ControlPanel.Data.UnitTests
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
-            _db = new ControlPanelEntities(options);
+            _db = new ControlPanelEntities(options, (context, modelBuilder) =>
+            {
+                modelBuilder.Entity<AccountDetail>()
+                    .HasNoKey()
+                    .ToView("VwAccountsDetails")
+                    .ToInMemoryQuery(() => context.Accounts
+                        .Join(context.Persons, x => x.PersonId, x => x.Id, (a, p) => new {Account = a, Person = p})
+                        .Select(x => new AccountDetail()
+                        {
+                            Name = x.Person.Name,
+                            AccountTypeId = x.Account.AccountTypeId,
+                            PersonTypeId = x.Person.PersonTypeId,
+                            IdentityProviderId = x.Account.IdentityProviderId,
+                            PersonId = x.Person.Id,
+                            Email = x.Person.Email,
+                            LastName = x.Person.LastName,
+                            AccountOwnerId = x.Account.AccountOwnerId,
+                            AccountId = x.Account.Id,
+                            AccountTypeDescription = "Root",
+                            PersonTypeDescription = "Individual"
+                        }));
+            });
 
             var mock = new Mock<IUnitOfWork>();
             mock.Setup(o => o.AccountsRepository).Returns(new AccountsRepository(_db));
@@ -188,29 +212,29 @@ namespace SP.ControlPanel.Data.UnitTests
             //Arrange
             Account account1 = new Account()
             {
-                PersonId = 1,
                 AccountTypeId = 1,
+                PersonId = 1,
                 IdentityProviderId = "000-000-000"
             };
-            _db.Accounts.Add(account1);
             Account account2 = new Account()
             {
-                PersonId = 1,
                 AccountTypeId = 1,
+                PersonId = 1,
                 IdentityProviderId = "111-111-111"
             };
-            _db.Accounts.Add(account2);
             Account account3 = new Account()
             {
-                PersonId = 1,
                 AccountTypeId = 1,
+                PersonId = 1,
                 IdentityProviderId = "222-222-222"
             };
+            _db.Accounts.Add(account1);
+            _db.Accounts.Add(account2);
             _db.Accounts.Add(account3);
             _db.SaveChanges();
 
             //Act
-            IPaginatedResult<IAccount> result = _uow.AccountsRepository.PaginatedGetAll(1, 2);
+            IPaginatedResult<IAccountDetail> result = _uow.AccountsRepository.PaginatedGetAllDetails(1, 2);
 
             //Assert
             Assert.IsNotEmpty(result.Items);
@@ -224,29 +248,29 @@ namespace SP.ControlPanel.Data.UnitTests
             //Arrange
             Account account1 = new Account()
             {
-                PersonId = 1,
                 AccountTypeId = 1,
+                PersonId = 1,
                 IdentityProviderId = "000-000-000"
             };
-            _db.Accounts.Add(account1);
             Account account2 = new Account()
             {
-                PersonId = 1,
                 AccountTypeId = 1,
+                PersonId = 1,
                 IdentityProviderId = "111-111-111"
             };
-            _db.Accounts.Add(account2);
             Account account3 = new Account()
             {
-                PersonId = 1,
                 AccountTypeId = 1,
+                PersonId = 1,
                 IdentityProviderId = "222-222-222"
             };
+            _db.Accounts.Add(account1);
+            _db.Accounts.Add(account2);
             _db.Accounts.Add(account3);
             _db.SaveChanges();
 
             //Act
-            IPaginatedResult<IAccount> result = _uow.AccountsRepository.PaginatedGetAll(2, 2);
+            IPaginatedResult<IAccountDetail> result = _uow.AccountsRepository.PaginatedGetAllDetails(2, 2);
 
             //Assert
             Assert.IsNotEmpty(result.Items);
@@ -260,29 +284,29 @@ namespace SP.ControlPanel.Data.UnitTests
             //Arrange
             Account account1 = new Account()
             {
-                PersonId = 1,
                 AccountTypeId = 1,
+                PersonId = 1,
                 IdentityProviderId = "000-000-000"
             };
-            _db.Accounts.Add(account1);
             Account account2 = new Account()
             {
-                PersonId = 1,
                 AccountTypeId = 1,
+                PersonId = 1,
                 IdentityProviderId = "111-111-111"
             };
-            _db.Accounts.Add(account2);
             Account account3 = new Account()
             {
-                PersonId = 1,
                 AccountTypeId = 1,
+                PersonId = 1,
                 IdentityProviderId = "222-222-222"
             };
+            _db.Accounts.Add(account1);
+            _db.Accounts.Add(account2);
             _db.Accounts.Add(account3);
             _db.SaveChanges();
 
             //Act
-            IPaginatedResult<IAccount> result = _uow.AccountsRepository.PaginatedGetAll(2, 3);
+            IPaginatedResult<IAccountDetail> result = _uow.AccountsRepository.PaginatedGetAllDetails(2, 3);
 
             //Assert
             Assert.IsEmpty(result.Items);

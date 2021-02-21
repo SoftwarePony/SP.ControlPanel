@@ -37,12 +37,12 @@ namespace SP.ControlPanel.Data.Repositories
             return accountDb;
         }
 
-        public IPaginatedResult<IAccount> PaginatedGetAll(int page, int size)
+        public IPaginatedResult<IAccountDetail> PaginatedGetAllDetails(int page, int size)
         {
-            IEnumerable<IAccount> accountsPage = _db.Accounts.Skip((page - 1) * size).Take(size);
-            long totalItems = _db.Accounts.LongCount();
+            IEnumerable<IAccountDetail> accountsPage = _db.AccountDetails.Skip((page - 1) * size).Take(size).ToList();
+            long totalItems = _db.AccountDetails.LongCount();
 
-            return new PaginatedResult<IAccount>(accountsPage, totalItems, page, size);
+            return new PaginatedResult<IAccountDetail>(accountsPage, totalItems, page, size);
         }
 
         public void Add(IAccount account)

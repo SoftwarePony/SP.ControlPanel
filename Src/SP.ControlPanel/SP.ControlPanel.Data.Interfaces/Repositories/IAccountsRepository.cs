@@ -8,7 +8,7 @@ namespace SP.ControlPanel.Data.Interfaces.Repositories
     {
         IAccount GetById(long id);
         IAccount GetByIdentityProviderId(string id);
-        IPaginatedResult<IAccount> PaginatedGetAll(int page, int size);
+        IPaginatedResult<IAccountDetail> PaginatedGetAllDetails(int page, int size);
         void Add(IAccount account);
         void Update(IAccount account);
         void Delete(IAccount account);
