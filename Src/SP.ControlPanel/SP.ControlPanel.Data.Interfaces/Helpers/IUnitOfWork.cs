@@ -1,6 +1,6 @@
 ﻿using SP.ControlPanel.Data.Interfaces.Repositories;
 
-namespace SP.ControlPanel.Data.Interfaces
+namespace SP.ControlPanel.Data.Interfaces.Helpers
 {
     public interface IUnitOfWork
     {

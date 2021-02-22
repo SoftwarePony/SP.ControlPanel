@@ -11,6 +11,8 @@
       &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldGetAccountById&lt;/TestId&gt;&#xD;
       &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldGetAccountByIdentityProviderId&lt;/TestId&gt;&#xD;
       &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldGetPaginatedAccountsList&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldThrowExceptionIfNewAccountDataIsInvalid&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldThrowExceptionIfUpdatedAccountDataIsInvalid&lt;/TestId&gt;&#xD;
     &lt;/TestAncestor&gt;&#xD;
   &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

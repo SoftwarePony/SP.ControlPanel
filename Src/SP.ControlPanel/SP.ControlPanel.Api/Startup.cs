@@ -16,7 +16,14 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using SP.ControlPanel.Api.Authentication.Handlers;
 using SP.ControlPanel.Api.Authentication.Requirements;
+using SP.ControlPanel.Business.Interfaces.Services;
+using SP.ControlPanel.Business.Services;
+using SP.ControlPanel.Data.Helpers;
+using SP.ControlPanel.Data.Interfaces;
+using SP.ControlPanel.Data.Interfaces.Helpers;
+using SP.ControlPanel.Data.Interfaces.Repositories;
 using SP.ControlPanel.Data.Model;
+using SP.ControlPanel.Data.Repositories;
 
 namespace SP.ControlPanel.Api
 {
@@ -37,6 +44,15 @@ namespace SP.ControlPanel.Api
             services.AddDbContext<ControlPanelEntities>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnectionString"))
             );
+
+            services.AddScoped<IPersonsRepository, PersonsRepository>();
+            services.AddScoped<IAccountsRepository, AccountsRepository>();
+            services.AddScoped<IPersonTypesRepository, PersonTypesRepository>();
+            services.AddScoped<IAccountTypesRepository, AccountTypesRepository>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<IAccountsService, AccountsService>();
 
             services.AddScoped<IAuthorizationHandler, HasGlobalRoleHandler>();
 

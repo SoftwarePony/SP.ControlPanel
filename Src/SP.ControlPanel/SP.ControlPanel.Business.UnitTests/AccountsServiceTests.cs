@@ -72,6 +72,43 @@ namespace SP.ControlPanel.Business.UnitTests
         }
 
         [Test]
+        public void ShouldThrowExceptionIfNewAccountDataIsInvalid()
+        {
+            //Arrange
+            IUserAccount account = new UserAccount()
+            {
+                Name = null,
+                AccountType = AccountTypes.RootAccount,
+                PersonType = PersonTypes.Company,
+                Email = "softwarepony@pro-code.tech",
+                IdentityProviderId = "111-111-111"
+            };
+            Mock<IPersonsRepository> mockedPersonsRepository = new Mock<IPersonsRepository>();
+            mockedPersonsRepository.Setup(x => x.GetByEmail(It.IsAny<string>()))
+                .Returns(new Person()
+                {
+                    Email = account.Email,
+                    Id = 1,
+                    LastName = account.LastName,
+                    Name = account.Name,
+                    PersonTypeId = (int)PersonTypes.Company
+                });
+            Mock<IAccountsRepository> mockedAccountsRepository = new Mock<IAccountsRepository>();
+            Mock<IUnitOfWork> mockedUOW = new Mock<IUnitOfWork>();
+            mockedUOW.Setup(x => x.PersonsRepository).Returns(mockedPersonsRepository.Object);
+            mockedUOW.Setup(x => x.AccountsRepository).Returns(mockedAccountsRepository.Object);
+
+            _uow = mockedUOW.Object;
+            IAccountsService accountsService = new AccountsService(_uow);
+
+            Assert.Throws<ValidationFailedException>(() =>
+            {
+                //Act
+                accountsService.Create(account);
+            });
+        }
+
+        [Test]
         public void ShouldCreateNewAccount()
         {
             //Arrange
@@ -212,6 +249,45 @@ namespace SP.ControlPanel.Business.UnitTests
             IAccountsService accountsService = new AccountsService(_uow);
 
             Assert.Throws<EmailAlreadyInUseException>(() =>
+            {
+                //Act
+                accountsService.Update(account);
+            });
+        }
+
+        [Test]
+        public void ShouldThrowExceptionIfUpdatedAccountDataIsInvalid()
+        {
+            //Arrange
+            IUserAccount account = new UserAccount()
+            {
+                Name = null,
+                AccountType = AccountTypes.RootAccount,
+                PersonType = PersonTypes.Company,
+                Email = "softwareponyE@pro-code.tech",
+                IdentityProviderId = "111-111-111"
+            };
+            Mock<IPersonsRepository> mockedPersonsRepository = new Mock<IPersonsRepository>();
+            mockedPersonsRepository.Setup(x => x.GetByEmail(It.IsAny<string>()))
+                .Returns(new Person()
+                {
+                    Email = account.Email,
+                    Id = 1,
+                    LastName = account.LastName,
+                    Name = account.Name,
+                    PersonTypeId = (int)PersonTypes.Company
+                });
+            Mock<IAccountsRepository> mockedAccountsRepository = new Mock<IAccountsRepository>();
+            mockedAccountsRepository.SetupSequence(x => x.GetById(It.IsAny<long>()))
+                .Returns(new AccountDetail() { Email = "softwarepony@pro-code.tech" });
+            Mock<IUnitOfWork> mockedUOW = new Mock<IUnitOfWork>();
+            mockedUOW.Setup(x => x.PersonsRepository).Returns(mockedPersonsRepository.Object);
+            mockedUOW.Setup(x => x.AccountsRepository).Returns(mockedAccountsRepository.Object);
+
+            _uow = mockedUOW.Object;
+            IAccountsService accountsService = new AccountsService(_uow);
+
+            Assert.Throws<ValidationFailedException>(() =>
             {
                 //Act
                 accountsService.Update(account);

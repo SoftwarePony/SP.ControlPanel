@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SP.ControlPanel.Business.DTO;
+using SP.ControlPanel.Business.Extensions;
 using SP.ControlPanel.Business.Helpers;
 using SP.ControlPanel.Business.Interfaces.Exceptions;
-using SP.ControlPanel.Business.Interfaces.Helpers;
 using SP.ControlPanel.Business.Interfaces.Model;
 using SP.ControlPanel.Business.Interfaces.Services;
 using SP.ControlPanel.Business.Model;
 using SP.ControlPanel.Data.Interfaces;
+using SP.ControlPanel.Data.Interfaces.Helpers;
 using SP.ControlPanel.Data.Interfaces.Repositories;
 
 namespace SP.ControlPanel.Business.Services
@@ -27,6 +28,12 @@ namespace SP.ControlPanel.Business.Services
 
         public IUserAccount Create(IUserAccount account)
         {
+            List<KeyValuePair<string, string>> accountFailedValidations = account.Validate();
+            if (accountFailedValidations.Any())
+            {
+                throw new ValidationFailedException(accountFailedValidations);
+            }
+
             //Validate if email doesn't exist
             IPerson personWithEmail = _personsRepository.GetByEmail(account.Email);
             if (personWithEmail.Id != 0)
@@ -62,6 +69,12 @@ namespace SP.ControlPanel.Business.Services
 
         public IUserAccount Update(IUserAccount account)
         {
+            List<KeyValuePair<string, string>> accountFailedValidations = account.Validate();
+            if (accountFailedValidations.Any())
+            {
+                throw new ValidationFailedException(accountFailedValidations);
+            }
+
             IAccountDetail currentPerson = _accountsRepository.GetById(account.AccountId);
             if (currentPerson.Email.ToLower() != account.Email)
             {
@@ -110,7 +123,7 @@ namespace SP.ControlPanel.Business.Services
             return new UserAccount(account);
         }
 
-        public IPaginatedResult<IUserAccount> PaginatedList(int page, int size)
+        public Interfaces.Helpers.IPaginatedResult<IUserAccount> PaginatedList(int page, int size)
         {
             Data.Interfaces.Helpers.IPaginatedResult<IAccountDetail> accountDetails = _accountsRepository.PaginatedGetAllDetails(1, 1);
 

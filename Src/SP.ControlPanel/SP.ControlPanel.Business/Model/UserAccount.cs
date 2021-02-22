@@ -1,4 +1,6 @@
-﻿using SP.ControlPanel.Business.Interfaces.Enums;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using SP.ControlPanel.Business.Interfaces.Enums;
 using SP.ControlPanel.Business.Interfaces.Model;
 using SP.ControlPanel.Data.Interfaces;
 

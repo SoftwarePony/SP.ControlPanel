@@ -6,6 +6,7 @@ using Moq;
 using NUnit.Framework;
 using SP.ControlPanel.Data.Entities;
 using SP.ControlPanel.Data.Interfaces;
+using SP.ControlPanel.Data.Interfaces.Helpers;
 using SP.ControlPanel.Data.Interfaces.Repositories;
 using SP.ControlPanel.Data.Model;
 using SP.ControlPanel.Data.Repositories;
