@@ -19,7 +19,8 @@ namespace SP.ControlPanel.Data.Entities
         [Required]
         [ForeignKey(nameof(PersonType))]
         public int PersonTypeId { get; set; }
-        
+
+
         public PersonType PersonType { get; set; }
 
         public Person(IPerson person)

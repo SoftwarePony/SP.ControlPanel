@@ -24,6 +24,8 @@ namespace SP.ControlPanel.Data.Entities
         [ForeignKey(nameof(Person))]
         public long PersonId { get; set; }
 
+        public bool IsActive { get; set; }
+
         public Person Person { get; set; }
         public Account AccountOwner { get; set; }
         public AccountType AccountType { get; set; }
@@ -35,6 +37,7 @@ namespace SP.ControlPanel.Data.Entities
             AccountTypeId = account.AccountTypeId;
             AccountOwnerId = account.AccountOwnerId;
             PersonId = account.PersonId;
+            IsActive = account.IsActive;
         }
 
         public Account()

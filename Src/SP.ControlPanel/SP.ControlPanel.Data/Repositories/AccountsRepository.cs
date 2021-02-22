@@ -19,20 +19,20 @@ namespace SP.ControlPanel.Data.Repositories
             _db = db;
         }
 
-        public IAccount GetById(long id)
+        public IAccountDetail GetById(long id)
         {
-            IAccount accountDb = _db.Accounts.FirstOrDefault(x => x.Id == id);
+            IAccountDetail accountDb = _db.AccountDetails.FirstOrDefault(x => x.AccountId == id);
 
-            accountDb ??= new NullAccount();
+            accountDb ??= new NullAccountDetail();
 
             return accountDb;
         }
 
-        public IAccount GetByIdentityProviderId(string id)
+        public IAccountDetail GetByIdentityProviderId(string id)
         {
-            IAccount accountDb = _db.Accounts.FirstOrDefault(x => x.IdentityProviderId == id);
+            IAccountDetail accountDb = _db.AccountDetails.FirstOrDefault(x => x.IdentityProviderId == id);
 
-            accountDb ??= new NullAccount();
+            accountDb ??= new NullAccountDetail();
 
             return accountDb;
         }
@@ -63,13 +63,15 @@ namespace SP.ControlPanel.Data.Repositories
         public void Delete(IAccount account)
         {
             Account accountToDelete = _db.Accounts.FirstOrDefault(x => x.Id == account.Id);
-            _db.Accounts.Remove(accountToDelete);
+            
+            accountToDelete.IsActive = false;
         }
 
         public void DeleteById(long id)
         {
             Account accountToDelete = _db.Accounts.FirstOrDefault(x => x.Id == id);
-            _db.Accounts.Remove(accountToDelete);
+
+            accountToDelete.IsActive = false;
         }
     }
 }

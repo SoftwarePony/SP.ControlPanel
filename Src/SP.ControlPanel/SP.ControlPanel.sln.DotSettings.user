@@ -1,4 +1,16 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b98eacea_002Dc802_002D4de2_002Da36b_002Dd586013659b9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;SP.ControlPanel.Data.UnitTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="D:\Repos\SP.ControlPanel\Src\SP.ControlPanel\SP.ControlPanel.Data.UnitTests" Presentation="&amp;lt;SP.ControlPanel.Data.UnitTests&amp;gt;" /&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;Project Location="D:\Repos\SP.ControlPanel\Src\SP.ControlPanel\SP.ControlPanel.Data.UnitTests" Presentation="&amp;lt;SP.ControlPanel.Data.UnitTests&amp;gt;" /&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldCreateNewAccount&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldThrowExceptionIfNewAccountEmailAlreadyExists&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldUpdateAccount&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldThrowExceptionIfUpdatedAccountEmailAlreadyExists&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldDisableAccount&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldGetAccountById&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldGetAccountByIdentityProviderId&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::9348C77A-F1A4-4807-BE95-101CC51993AE::.NETCoreApp,Version=v3.1::SP.ControlPanel.Business.UnitTests.AccountsServiceTests.ShouldGetPaginatedAccountsList&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+  &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

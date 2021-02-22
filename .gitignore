@@ -23,3 +23,5 @@
 /Src/SP.ControlPanel/SP.ControlPanel.Core/bin/Debug/netstandard2.1
 /Src/SP.ControlPanel/SP.ControlPanel.Core.Interfaces/bin/Debug/netstandard2.1
 /Src/SP.ControlPanel/.vs/SP.ControlPanel/config
+/Src/SP.ControlPanel/SP.ControlPanel.Business.UnitTests/bin/Debug/netcoreapp3.1
+/Src/SP.ControlPanel/SP.ControlPanel.Business.UnitTests/obj

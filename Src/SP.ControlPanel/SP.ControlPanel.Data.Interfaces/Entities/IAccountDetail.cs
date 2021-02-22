@@ -13,5 +13,6 @@
         int PersonTypeId { get; set; }
         string AccountTypeDescription { get; set; }
         string PersonTypeDescription { get; set; }
+        bool IsActive { get; set; }
     }
 }

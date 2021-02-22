@@ -1,10 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SP.ControlPanel.Data.Interfaces;
+﻿using SP.ControlPanel.Data.Interfaces;
 
-namespace SP.ControlPanel.Data.Entities
+namespace SP.ControlPanel.Data.Entities.NullObjects
 {
-    [Keyless]
-    public class AccountDetail : IAccountDetail
+    public class NullAccountDetail : IAccountDetail
     {
         public long AccountId { get; set; }
         public string IdentityProviderId { get; set; }

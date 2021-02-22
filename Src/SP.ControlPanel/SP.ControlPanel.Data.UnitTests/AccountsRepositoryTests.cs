@@ -36,6 +36,7 @@ namespace SP.ControlPanel.Data.UnitTests
                     .ToView("VwAccountsDetails")
                     .ToInMemoryQuery(() => context.Accounts
                         .Join(context.Persons, x => x.PersonId, x => x.Id, (a, p) => new {Account = a, Person = p})
+                        .Where(x => x.Account.IsActive)
                         .Select(x => new AccountDetail()
                         {
                             Name = x.Person.Name,
@@ -99,7 +100,7 @@ namespace SP.ControlPanel.Data.UnitTests
         }
 
         [Test]
-        public void ShouldDeleteAccount()
+        public void ShouldDisableAccount()
         {
             //Arrange
             Account account = new Account()
@@ -115,7 +116,7 @@ namespace SP.ControlPanel.Data.UnitTests
             _uow.Save();
 
             //Assert
-            Account accountDb = _db.Accounts.FirstOrDefault();
+            Account accountDb = _db.Accounts.FirstOrDefault(x => x.IsActive == true);
 
             Assert.IsNull(accountDb);
         }
@@ -127,18 +128,19 @@ namespace SP.ControlPanel.Data.UnitTests
             Account account = new Account()
             {
                 PersonId = 1,
-                AccountTypeId = 1
+                AccountTypeId = 1,
+                IsActive = true
             };
             _db.Accounts.Add(account);
             _db.SaveChanges();
             long expectedId = account.Id;
 
             //Act
-            IAccount accountDb = _uow.AccountsRepository.GetById(expectedId);
+            IAccountDetail accountDb = _uow.AccountsRepository.GetById(expectedId);
 
             //Assert
             Assert.NotNull(accountDb);
-            Assert.AreEqual(expectedId, accountDb.Id);
+            Assert.AreEqual(expectedId, accountDb.AccountId);
         }
 
         [Test]
@@ -155,11 +157,11 @@ namespace SP.ControlPanel.Data.UnitTests
             long expectedId = account.Id + 1;
 
             //Act
-            IAccount accountDb = _uow.AccountsRepository.GetById(expectedId);
+            IAccountDetail accountDb = _uow.AccountsRepository.GetById(expectedId);
 
             //Assert
             Assert.NotNull(accountDb);
-            Assert.AreEqual(0, accountDb.Id);
+            Assert.AreEqual(0, accountDb.AccountId);
         }
 
         [Test]
@@ -170,18 +172,19 @@ namespace SP.ControlPanel.Data.UnitTests
             {
                 PersonId = 1,
                 AccountTypeId = 1,
-                IdentityProviderId = "000-000-000"
+                IdentityProviderId = "000-000-000",
+                IsActive = true
             };
             _db.Accounts.Add(account);
             _db.SaveChanges();
             long expectedId = account.Id;
 
             //Act
-            IAccount accountDb = _uow.AccountsRepository.GetByIdentityProviderId(account.IdentityProviderId);
+            IAccountDetail accountDb = _uow.AccountsRepository.GetByIdentityProviderId(account.IdentityProviderId);
 
             //Assert
             Assert.NotNull(accountDb);
-            Assert.AreEqual(expectedId, accountDb.Id);
+            Assert.AreEqual(expectedId, accountDb.AccountId);
         }
 
         [Test]
@@ -199,11 +202,11 @@ namespace SP.ControlPanel.Data.UnitTests
             long expectedId = 0;
 
             //Act
-            IAccount accountDb = _uow.AccountsRepository.GetByIdentityProviderId("111-111-111");
+            IAccountDetail accountDb = _uow.AccountsRepository.GetByIdentityProviderId("111-111-111");
 
             //Assert
             Assert.NotNull(accountDb);
-            Assert.AreEqual(expectedId, accountDb.Id);
+            Assert.AreEqual(expectedId, accountDb.AccountId);
         }
 
         [Test]
@@ -214,19 +217,22 @@ namespace SP.ControlPanel.Data.UnitTests
             {
                 AccountTypeId = 1,
                 PersonId = 1,
-                IdentityProviderId = "000-000-000"
+                IdentityProviderId = "000-000-000",
+                IsActive = true
             };
             Account account2 = new Account()
             {
                 AccountTypeId = 1,
                 PersonId = 1,
-                IdentityProviderId = "111-111-111"
+                IdentityProviderId = "111-111-111",
+                IsActive = true
             };
             Account account3 = new Account()
             {
                 AccountTypeId = 1,
                 PersonId = 1,
-                IdentityProviderId = "222-222-222"
+                IdentityProviderId = "222-222-222",
+                IsActive = true
             };
             _db.Accounts.Add(account1);
             _db.Accounts.Add(account2);
@@ -243,6 +249,77 @@ namespace SP.ControlPanel.Data.UnitTests
         }
 
         [Test]
+        public void ShouldGetOnlyActiveAccounts()
+        {
+            //Arrange
+            Account account1 = new Account()
+            {
+                AccountTypeId = 1,
+                PersonId = 1,
+                IdentityProviderId = "000-000-000",
+                IsActive = true
+            };
+            Account account2 = new Account()
+            {
+                AccountTypeId = 1,
+                PersonId = 1,
+                IdentityProviderId = "111-111-111",
+                IsActive = false
+            };
+            Account account3 = new Account()
+            {
+                AccountTypeId = 1,
+                PersonId = 1,
+                IdentityProviderId = "222-222-222",
+                IsActive = false
+            };
+            _db.Accounts.Add(account1);
+            _db.Accounts.Add(account2);
+            _db.Accounts.Add(account3);
+            _db.SaveChanges();
+
+            //Act
+            IPaginatedResult<IAccountDetail> result = _uow.AccountsRepository.PaginatedGetAllDetails(1, 2);
+
+            //Assert
+            Assert.IsNotEmpty(result.Items);
+            Assert.AreEqual(1, result.Items.Count());
+            Assert.AreEqual(1, result.TotalItems);
+        }
+
+        [Test]
+        public void ShouldDisableAccountsInsteadOfDeletingThem()
+        {
+            //Arrange
+            Account account = new Account()
+            {
+                AccountTypeId = 1,
+                PersonId = 1,
+                IdentityProviderId = "000-000-000",
+                IsActive = true
+            };
+            _db.Accounts.Add(account);
+            _db.SaveChanges();
+
+            //Act
+            IAccount accountToDelete = new Account()
+            {
+                Id = 1,
+                AccountTypeId = 1,
+                PersonId = 1,
+                IdentityProviderId = "000-000-000",
+                IsActive = true
+            };
+            _uow.AccountsRepository.Delete(accountToDelete);
+            _uow.Save();
+
+            //Assert
+            Account disabledAccount = _db.Accounts.FirstOrDefault();
+            Assert.NotNull(disabledAccount);
+            Assert.AreEqual(false, disabledAccount.IsActive);
+        }
+
+        [Test]
         public void ShouldGetPaginatedAccountsSecondPage()
         {
             //Arrange
@@ -250,19 +327,22 @@ namespace SP.ControlPanel.Data.UnitTests
             {
                 AccountTypeId = 1,
                 PersonId = 1,
-                IdentityProviderId = "000-000-000"
+                IdentityProviderId = "000-000-000",
+                IsActive = true
             };
             Account account2 = new Account()
             {
                 AccountTypeId = 1,
                 PersonId = 1,
-                IdentityProviderId = "111-111-111"
+                IdentityProviderId = "111-111-111",
+                IsActive = true
             };
             Account account3 = new Account()
             {
                 AccountTypeId = 1,
                 PersonId = 1,
-                IdentityProviderId = "222-222-222"
+                IdentityProviderId = "222-222-222",
+                IsActive = true
             };
             _db.Accounts.Add(account1);
             _db.Accounts.Add(account2);
@@ -286,19 +366,22 @@ namespace SP.ControlPanel.Data.UnitTests
             {
                 AccountTypeId = 1,
                 PersonId = 1,
-                IdentityProviderId = "000-000-000"
+                IdentityProviderId = "000-000-000",
+                IsActive = true
             };
             Account account2 = new Account()
             {
                 AccountTypeId = 1,
                 PersonId = 1,
-                IdentityProviderId = "111-111-111"
+                IdentityProviderId = "111-111-111",
+                IsActive = true
             };
             Account account3 = new Account()
             {
                 AccountTypeId = 1,
                 PersonId = 1,
-                IdentityProviderId = "222-222-222"
+                IdentityProviderId = "222-222-222",
+                IsActive = true
             };
             _db.Accounts.Add(account1);
             _db.Accounts.Add(account2);
@@ -340,7 +423,7 @@ namespace SP.ControlPanel.Data.UnitTests
         }
 
         [Test]
-        public void ShouldDeleteAccountWithId()
+        public void ShouldDisableAccountWithId()
         {
             //Arrange
             Account account = new Account()
@@ -358,7 +441,7 @@ namespace SP.ControlPanel.Data.UnitTests
             _uow.Save();
 
             //Assert
-            Account accountDb = _db.Accounts.FirstOrDefault();
+            Account accountDb = _db.Accounts.FirstOrDefault(x => x.IsActive == true);
 
             Assert.IsNull(accountDb);
         }

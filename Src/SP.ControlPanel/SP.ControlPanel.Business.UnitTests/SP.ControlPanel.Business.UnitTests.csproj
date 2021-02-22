@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.16.0" />
+    <PackageReference Include="NUnit" Version="3.13.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SP.ControlPanel.Business.Interfaces\SP.ControlPanel.Business.Interfaces.csproj" />
+    <ProjectReference Include="..\SP.ControlPanel.Business\SP.ControlPanel.Business.csproj" />
+    <ProjectReference Include="..\SP.ControlPanel.Data.Interfaces\SP.ControlPanel.Data.Interfaces.csproj" />
+    <ProjectReference Include="..\SP.ControlPanel.Data\SP.ControlPanel.Data.csproj" />
+  </ItemGroup>
+
+</Project>

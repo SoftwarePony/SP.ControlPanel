@@ -100,6 +100,27 @@ namespace SP.ControlPanel.Data.UnitTests
         }
 
         [Test]
+        public void ShouldGetPersonByEmail()
+        {
+            //Arrange
+            Person person = new Person()
+            {
+                Name = "Jessica",
+                LastName = "L",
+                Email = "jessica@pro-code.tech",
+                PersonTypeId = 1
+            };
+            _db.Persons.Add(person);
+            _db.SaveChanges();
+
+            //Act
+            IPerson personWithEmail = _uow.PersonsRepository.GetByEmail(person.Email);
+
+            //Assert
+            Assert.NotNull(personWithEmail);
+        }
+
+        [Test]
         public void ShouldDeletePerson()
         {
             //Arrange

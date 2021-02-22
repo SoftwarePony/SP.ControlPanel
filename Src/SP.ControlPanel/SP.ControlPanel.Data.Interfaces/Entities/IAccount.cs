@@ -7,5 +7,6 @@
         int AccountTypeId { get; set; }
         long? AccountOwnerId { get; set; }
         long PersonId { get; set; }
+        bool IsActive { get; set; }
     }
 }
